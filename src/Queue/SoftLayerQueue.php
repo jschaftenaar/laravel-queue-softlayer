@@ -3,6 +3,8 @@
 use Illuminate\Queue\Queue;
 use Illuminate\Queue\QueueInterface;
 use SoftLayer\Messaging;
+use Nathanmac\LaravelQueueSoftLayer\Queue\Jobs\SoftLayerJob;
+
 
 class SoftLayerQueue extends Queue implements QueueInterface
 {
@@ -46,11 +48,11 @@ class SoftLayerQueue extends Queue implements QueueInterface
     public function pushRaw($payload, $queue = null, array $options = [])
     {
         $queue = $this->connection->queue($this->getQueue($queue))->create();
-        $mesage = $queue->message($payload);
+        $message = $queue->message($payload);
 
-        if (isset($options['delay'])) $mesage->setVisibilityDelay($options['delay']);
+        if (isset($options['delay'])) $message->setVisibilityDelay($options['delay']);
 
-        return $mesage->create();
+        return $message->create();
     }
 
     /**
@@ -81,11 +83,12 @@ class SoftLayerQueue extends Queue implements QueueInterface
     {
         $queue = $this->connection->queue($this->getQueue($queue))->fetch();
 
-        $message = $queue->messages(1);
+        $messages = $queue->messages(1);
 
-        if ( ! is_null($message))
+        if ( ! is_null($messages) && ! empty($messages))
         {
-            
+            $job = $messages[0];
+            return new SoftLayerJob($this->container, $this, $job);
         }
     }
 
