@@ -1,4 +1,4 @@
-<?php namespace NathanMac\LaravelQueueSoftLayer\Queue;
+<?php namespace Nathanmac\LaravelQueueSoftLayer\Queue;
 
 use Illuminate\Queue\Queue;
 use Illuminate\Queue\QueueInterface;
@@ -46,7 +46,11 @@ class SoftLayerQueue extends Queue implements QueueInterface
     public function pushRaw($payload, $queue = null, array $options = [])
     {
         $queue = $this->connection->queue($this->getQueue($queue))->create();
-        return $queue->message($payload)->create();
+        $mesage = $queue->message($payload);
+
+        if (isset($options['delay'])) $mesage->setVisibilityDelay($options['delay']);
+
+        return $mesage->create();
     }
 
     /**
@@ -61,7 +65,9 @@ class SoftLayerQueue extends Queue implements QueueInterface
      */
     public function later($delay, $job, $data = '', $queue = null)
     {
-
+        $delay = $this->getSeconds($delay);
+        $payload = $this->createPayload($job, $data, $queue);
+        return $this->pushRaw($payload, $queue, compact('delay'));
     }
 
     /**
@@ -73,7 +79,27 @@ class SoftLayerQueue extends Queue implements QueueInterface
      */
     public function pop($queue = null)
     {
+        $queue = $this->connection->queue($this->getQueue($queue))->fetch();
 
+        $message = $queue->messages(1);
+
+        if ( ! is_null($message))
+        {
+            
+        }
+    }
+
+    /**
+     * Delete a message from the queue.
+     *
+     * @param  string  $queue
+     * @param  string  $id
+     * @return void
+     */
+    public function deleteMessage($queue, $id)
+    {
+        $queue = $this->connection->queue($this->getQueue($queue))->fetch();
+        $queue->message()->delete($id);
     }
 
     /**

@@ -1,7 +1,7 @@
 <?php namespace Nathanmac\LaravelQueueSoftLayer;
 
 use Illuminate\Support\ServiceProvider;
-use NathanMac\LaravelQueueSoftLayer\Queue\Connectors\SoftLayerConnector;
+use Nathanmac\LaravelQueueSoftLayer\Queue\Connectors\SoftLayerConnector;
 use Queue;
 
 class LaravelQueueSoftLayerServiceProvider extends ServiceProvider

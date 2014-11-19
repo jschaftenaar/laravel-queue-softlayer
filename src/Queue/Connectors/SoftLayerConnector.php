@@ -1,6 +1,6 @@
-<?php namespace NathanMac\LaravelQueueSoftLayer\Queue\Connectors;
+<?php namespace Nathanmac\LaravelQueueSoftLayer\Queue\Connectors;
 
-use NathanMac\LaravelQueueSoftLayer\Queue\SoftLayerQueue;
+use Nathanmac\LaravelQueueSoftLayer\Queue\SoftLayerQueue;
 use SoftLayer;
 use Illuminate\Queue\Connectors\ConnectorInterface;
 
