@@ -16,8 +16,11 @@ class SoftLayerConnector implements ConnectorInterface
      */
     public function connect(array $config)
     {
+        $endpoint = isset($config['endpoint']) ? $config['endpoint'] : 'dal05';
+        $private = isset($config['private']) && $config['private'] == true ? true : false;
+
         // Create Connection with SoftLayer
-        $connection = new SoftLayer\Messaging();
+        $connection = new SoftLayer\Messaging($endpoint, $private);
         $connection->authenticate($config['account'], $config['username'], $config['token']);
 
         return new SoftLayerQueue(
