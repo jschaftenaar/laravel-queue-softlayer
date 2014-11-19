@@ -1,6 +1,8 @@
 SoftLayer Message Queue driver for Laravel
 ==========================================
 
+[![License](http://img.shields.io/packagist/l/nathanmac/laravel-queue-softlayer.svg)](https://github.com/nathanmac/laravel-queue-softlayer/blob/master/LICENSE.md)
+
 ## Installation
 
 Require this package in your composer.json and run composer update:
@@ -33,7 +35,11 @@ now you are able to configure your connections in queue.php:
 				'username'       => '', // SoftLayer Username
 				'token'          => '', // SoftLayer Password
 	
-				'queue'          => ''  // name of the default queue
+				'queue'          => '', // name of the default queue
+				
+				 // Optional configuration settings for SoftLayer
+                'endpoint'       => 'dal05',
+                'private'        => true
 			],
 	
 		],
