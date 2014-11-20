@@ -2,6 +2,7 @@ SoftLayer Message Queue driver for Laravel
 ==========================================
 
 [![License](http://img.shields.io/packagist/l/nathanmac/laravel-queue-softlayer.svg)](https://github.com/nathanmac/laravel-queue-softlayer/blob/master/LICENSE.md)
+[![Build Status](https://travis-ci.org/nathanmac/laravel-queue-softlayer.svg?branch=master)](https://travis-ci.org/nathanmac/laravel-queue-softlayer)
 
 ## Installation
 
