@@ -7,14 +7,14 @@ use Queue;
 class SoftLayerJob extends Job
 {
 
-    protected $queue;
+    protected $softlayer;
     protected $envelope;
     protected $job;
 
-    public function __construct($container, SoftLayerQueue $queue, $job)
+    public function __construct($container, SoftLayerQueue $queue, \SoftLayer\Messaging\Message $job)
     {
         $this->container = $container;
-        $this->queue = $queue;
+        $this->softlayer = $queue;
         $this->job = $job;
     }
 
@@ -47,7 +47,7 @@ class SoftLayerJob extends Job
     {
         parent::delete();
 
-        $this->queue->deleteMessage($this->getQueue(), $this->job->getId());
+        $this->softlayer->deleteMessage($this->getSoftlayer(), $this->job->getId());
     }
 
     /**
@@ -74,9 +74,9 @@ class SoftLayerJob extends Job
 
         // push back to a queue
         if ($delay > 0) {
-            Queue::later($delay, $job, $data, $this->getQueue());
+            Queue::later($delay, $job, $data, $this->getSoftlayer());
         } else {
-            Queue::push($job, $data, $this->getQueue());
+            Queue::push($job, $data, $this->getSoftlayer());
         }
     }
 
@@ -103,13 +103,31 @@ class SoftLayerJob extends Job
     }
 
     /**
-     * Get the name of the queue the job belongs to.
+     * Get the IoC container instance.
      *
-     * @return string
+     * @return \Illuminate\Container\Container
      */
-    public function getQueue()
+    public function getContainer()
     {
-        return $this->queue->getQueue(null);//array_get(json_decode($this->job->getBody(), true), 'queue');
+        return $this->container;
     }
 
+    /**
+     * Get the underlying SoftLayer instance.
+     *
+     * @return \SoftLayer\Messaging
+     */
+    public function getSoftLayer()
+    {
+        return $this->softlayer;
+    }
+    /**
+     * Get the underlying SoftLayer Message job.
+     *
+     * @return \SoftLayer\Messaging\Message
+     */
+    public function getSoftLayerJob()
+    {
+        return $this->job;
+    }
 }

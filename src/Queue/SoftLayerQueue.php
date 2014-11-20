@@ -47,8 +47,7 @@ class SoftLayerQueue extends Queue implements QueueInterface
      */
     public function pushRaw($payload, $queue = null, array $options = [])
     {
-        $queue = $this->connection->queue($this->getQueue($queue))->create();
-        $message = $queue->message($payload);
+        $message = $this->connection->queue($this->getQueue($queue))->create()->message($payload);
 
         if (isset($options['delay'])) $message->setVisibilityDelay($options['delay']);
 
@@ -65,7 +64,7 @@ class SoftLayerQueue extends Queue implements QueueInterface
      *
      * @return mixed
      */
-    public function later($delay, $job, $data = '', $queue = null)
+    public function  later($delay, $job, $data = '', $queue = null)
     {
         $delay = $this->getSeconds($delay);
         $payload = $this->createPayload($job, $data, $queue);
