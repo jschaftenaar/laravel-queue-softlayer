@@ -33,6 +33,16 @@ class QueueSoftLayerQueueTest extends PHPUnit_Framework_TestCase {
         $queue->later(5, 'foo', array(1, 2, 3));
     }
 
+    public function testPopProperlyHandlesEmptySoftLayerQueue()
+    {
+        $queue = new \Nathanmac\LaravelQueueSoftLayer\Queue\SoftLayerQueue($softlayer = m::mock('\SoftLayer\Messaging'), 'default');
+        $queue->setContainer(m::mock('Illuminate\Container\Container'));
+        $softlayer->shouldReceive('queue')->once()->with('default')->andReturn($softlayer_queue = m::mock('\SoftLayer\Messaging\Queue'));
+        $softlayer_queue->shouldReceive('fetch')->once()->andReturnSelf();
+        $softlayer_queue->shouldReceive('messages')->once()->with(1)->andReturn([]); // Empty no messages
+        $queue->pop();
+    }
+
     public function testPopProperlyPopsJobOffOfSoftLayer()
     {
         $queue = new \Nathanmac\LaravelQueueSoftLayer\Queue\SoftLayerQueue($softlayer = m::mock('\SoftLayer\Messaging'), 'default');
