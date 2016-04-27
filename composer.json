@@ -10,7 +10,8 @@
 	],
 	"require": {
 		"php": ">=5.4.0",
-        "nathanmac/softlayer-message-queue-php": "1.*"
+-		"illuminate/support": "5.0.*",
+ -		"illuminate/queue": "5.0.*"
 	},
     "require-dev": {
         "mockery/mockery": "~0.9",
